@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>文章 — zw-blog 原型</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">ZW</span>
+          <span class="brand-name">日志</span>
+        </a>
+        <nav>
+          <a href="index.html">日志</a>
+          <a href="tags.html">标签</a>
+          <a href="search.html">搜索</a>
+          <a href="about.html">关于</a>
+        </nav>
+      </header>
+
+      <article class="article">
+        <time class="spine" datetime="2026-08-20">2026 / 08.20</time>
+        <span class="bookmark" aria-hidden="true"></span>
+        <div class="prose">
+          <h1>SQLite FTS5 够用的时候，就不要上搜索引擎</h1>
+          <div class="chips">
+            <a class="chip" href="tag.html">技术</a>
+          </div>
+          <p>个人站点的访问模式很简单：作者记得大概写过什么，读者带着一个词进来。独立搜索集群解决的是另一类问题。</p>
+          <p>标题和正文进 FTS5 之后，发布与撤回只要同步索引。草稿永远不要进索引。</p>
+          <pre><code>SELECT article_id FROM articles_fts
+WHERE articles_fts MATCH 'FTS5';</code></pre>
+          <table>
+            <thead>
+              <tr>
+                <th>做法</th>
+                <th>何时用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SQLite FTS5</td>
+                <td>单机、个人量级</td>
+              </tr>
+              <tr>
+                <td>独立引擎</td>
+                <td>多实例、复杂相关性</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <section class="comments" aria-labelledby="comments-title">
+        <h2 id="comments-title">评论</h2>
+        <p class="meta">登录后即可留言。评论会立刻显示。</p>
+        <p><a class="link-btn" href="post-logged.html">使用 GitHub 登录</a></p>
+        <div class="comment">
+          <div class="avatar" aria-hidden="true"></div>
+          <div>
+            <div class="meta">octocat · 2026-08-21</div>
+            <p>写得清楚，我也先从 FTS5 开始。</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

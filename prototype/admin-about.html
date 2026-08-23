@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>编辑关于我 — zw-blog 原型</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="admin-posts.html">
+          <span class="brand-mark">ZW</span>
+          <span class="brand-name">后台</span>
+        </a>
+        <nav>
+          <a href="admin-posts.html">文章</a>
+          <a href="admin-about.html" aria-current="page">关于我</a>
+        </nav>
+      </header>
+
+      <h1 class="page-title">编辑关于我</h1>
+      <form>
+        <div class="field">
+          <label for="about">正文 Markdown</label>
+          <textarea id="about" name="about">这里写技术笔记，也写一些没有标题也想留下来的句子。</textarea>
+        </div>
+        <button class="btn" type="button">保存</button>
+      </form>
+    </div>
+  </body>
+</html>

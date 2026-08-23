@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>搜索 — zw-blog 原型</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">ZW</span>
+          <span class="brand-name">日志</span>
+        </a>
+        <nav>
+          <a href="index.html">日志</a>
+          <a href="tags.html">标签</a>
+          <a href="search.html" aria-current="page">搜索</a>
+          <a href="about.html">关于</a>
+        </nav>
+      </header>
+
+      <h1 class="page-title">搜索</h1>
+      <form id="search-form">
+        <div class="field">
+          <label for="q">关键词</label>
+          <input id="q" name="q" type="search" autocomplete="off" />
+        </div>
+        <button class="btn" type="submit">搜索</button>
+      </form>
+      <p id="hint" class="empty" hidden role="alert">输入关键词</p>
+      <p id="none" class="empty" hidden>没有找到相关文章</p>
+      <ol id="hits" class="log" hidden>
+        <li class="log-item">
+          <time class="spine" datetime="2026-08-20">2026 / 08.20</time>
+          <span class="bookmark" aria-hidden="true"></span>
+          <div>
+            <h2><a href="post.html">SQLite FTS5 够用的时候，就不要上搜索引擎</a></h2>
+            <p class="excerpt">命中标题与正文中的「FTS5」。</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <script>
+      const form = document.getElementById("search-form");
+      const q = document.getElementById("q");
+      const hint = document.getElementById("hint");
+      const none = document.getElementById("none");
+      const hits = document.getElementById("hits");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const value = q.value.trim();
+        hint.hidden = true;
+        none.hidden = true;
+        hits.hidden = true;
+        if (!value) {
+          hint.hidden = false;
+          return;
+        }
+        if (value.includes("不可能") || value.toLowerCase() === "xyz") {
+          none.hidden = false;
+          return;
+        }
+        hits.hidden = false;
+      });
+    </script>
+  </body>
+</html>

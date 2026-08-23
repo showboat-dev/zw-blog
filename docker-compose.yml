@@ -1,0 +1,20 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    env_file: .env
+    volumes:
+      - blog_data:/data
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////data/blog.db
+      UPLOAD_DIR: /data/uploads
+  web:
+    build: ./web
+    ports:
+      - "4173:4173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+
+volumes:
+  blog_data:

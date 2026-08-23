@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>已登录评论 — zw-blog 原型</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">ZW</span>
+          <span class="brand-name">日志</span>
+        </a>
+        <nav>
+          <a href="index.html">日志</a>
+          <a href="tags.html">标签</a>
+          <a href="search.html">搜索</a>
+          <a href="about.html">关于</a>
+        </nav>
+      </header>
+
+      <article class="article">
+        <time class="spine" datetime="2026-08-20">2026 / 08.20</time>
+        <span class="bookmark" aria-hidden="true"></span>
+        <div class="prose">
+          <h1>SQLite FTS5 够用的时候，就不要上搜索引擎</h1>
+          <p>你已用 GitHub 登录，可以在下方留言。</p>
+        </div>
+      </article>
+
+      <section class="comments">
+        <h2>评论</h2>
+        <p class="meta">以 octocat 的身份发表 · <a href="post.html">退出</a></p>
+        <form>
+          <div class="field">
+            <label for="body">评论</label>
+            <textarea id="body" name="body" maxlength="2000" required></textarea>
+          </div>
+          <button class="btn" type="submit">发表评论</button>
+        </form>
+        <div class="comment">
+          <div class="avatar" aria-hidden="true"></div>
+          <div>
+            <div class="meta">octocat · 2026-08-21</div>
+            <p>写得清楚，我也先从 FTS5 开始。</p>
+          </div>
+        </div>
+        <p class="meta" style="margin-top: 1rem">
+          作者视角见 <a href="post-admin.html">带删除按钮的评论区</a>
+        </p>
+      </section>
+    </div>
+  </body>
+</html>

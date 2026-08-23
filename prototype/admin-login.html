@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>后台登录 — zw-blog 原型</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">ZW</span>
+          <span class="brand-name">日志</span>
+        </a>
+        <nav>
+          <a href="index.html">返回站点</a>
+        </nav>
+      </header>
+
+      <h1 class="page-title">后台登录</h1>
+      <form class="panel" id="login-form" style="max-width: 22rem">
+        <p id="err" class="alert" hidden role="alert">用户名或密码不正确</p>
+        <div class="field">
+          <label for="username">用户名</label>
+          <input id="username" name="username" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="password">密码</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <button class="btn" type="submit">登录</button>
+      </form>
+    </div>
+    <script>
+      document.getElementById("login-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const user = document.getElementById("username").value;
+        const pass = document.getElementById("password").value;
+        const err = document.getElementById("err");
+        if (user === "admin" && pass === "admin") {
+          window.location.href = "admin-posts.html";
+          return;
+        }
+        err.hidden = false;
+      });
+    </script>
+  </body>
+</html>

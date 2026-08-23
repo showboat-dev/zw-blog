@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>后台文章 — zw-blog 原型</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">ZW</span>
+          <span class="brand-name">后台</span>
+        </a>
+        <nav>
+          <a href="admin-posts.html" aria-current="page">文章</a>
+          <a href="admin-about.html">关于我</a>
+          <a href="index.html">站点</a>
+        </nav>
+      </header>
+
+      <h1 class="page-title">文章</h1>
+      <p><a class="link-btn" href="admin-edit.html">新建文章</a></p>
+      <div class="filters" role="tablist">
+        <a href="#all" class="is-current" data-filter="all">全部</a>
+        <a href="#draft" data-filter="draft">草稿</a>
+        <a href="#published" data-filter="published">已发布</a>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>状态</th>
+            <th>更新</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-status="published">
+            <td><a href="admin-edit.html">SQLite FTS5 够用的时候，就不要上搜索引擎</a></td>
+            <td class="status">published</td>
+            <td>2026-08-20</td>
+          </tr>
+          <tr data-status="draft">
+            <td><a href="admin-edit.html">还没写完的随笔</a></td>
+            <td class="status">draft</td>
+            <td>2026-08-18</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script>
+      const links = document.querySelectorAll(".filters a");
+      const rows = document.querySelectorAll("tbody tr");
+      links.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          links.forEach((item) => item.classList.remove("is-current"));
+          link.classList.add("is-current");
+          const filter = link.dataset.filter;
+          rows.forEach((row) => {
+            row.hidden = filter !== "all" && row.dataset.status !== filter;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
