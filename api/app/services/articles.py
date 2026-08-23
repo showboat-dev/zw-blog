@@ -28,12 +28,15 @@ def get_or_create_tags(db: Session, names: list[str]) -> list[Tag]:
             continue
         tag = db.scalar(select(Tag).where(Tag.name == name))
         if tag is None:
-            tag = Tag(name=name, slug=slugify(name) if slugify(name) != "untitled" else slugify(f"tag-{name}"))
-            if not is_valid_slug(tag.slug):
-                tag.slug = slugify(f"tag-{abs(hash(name))}")
-            existing_slug = db.scalar(select(Tag).where(Tag.slug == tag.slug))
-            if existing_slug:
-                tag.slug = f"{tag.slug}-{article_count_hint(db)}"
+            base = slugify(name)
+            if base == "untitled":
+                base = f"tag-{abs(hash(name)) % 10**8}"
+            slug = base
+            suffix = 1
+            while db.scalar(select(Tag).where(Tag.slug == slug)):
+                suffix += 1
+                slug = f"{base}-{suffix}"
+            tag = Tag(name=name, slug=slug)
             db.add(tag)
             db.flush()
         tags.append(tag)
