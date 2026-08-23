@@ -10,11 +10,12 @@ services:
       DATABASE_URL: sqlite+aiosqlite:////data/blog.db
       UPLOAD_DIR: /data/uploads
   web:
-    build: ./web
+    build:
+      context: ./web
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
     ports:
       - "4173:4173"
-    environment:
-      VITE_API_BASE_URL: http://localhost:8000
 
 volumes:
   blog_data:
