@@ -3,8 +3,12 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-ARG VITE_API_BASE_URL=http://localhost:8000
+# Empty = same-origin /api via server.mjs (needed on Render *.onrender.com).
+ARG VITE_API_BASE_URL=
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 RUN npm run build
-EXPOSE 4173
-CMD ["npm", "run", "preview"]
+ENV PORT=10000
+ENV API_UPSTREAM=http://127.0.0.1:8000
+EXPOSE 10000
+CMD ["node", "server.mjs"]
+
