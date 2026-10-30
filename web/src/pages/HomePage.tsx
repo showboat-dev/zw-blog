@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api, type ArticleListItem, type Page } from "../api/client";
-
-function spine(date: string | null) {
-  if (!date) return "";
-  const d = new Date(date);
-  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(d.getUTCDate()).padStart(2, "0");
-  return `${d.getUTCFullYear()} / ${month}.${day}`;
-}
+import { formatDate } from "../utils/date";
 
 export function HomePage() {
   const [params, setParams] = useSearchParams();
   const page = Number(params.get("page") || "1");
   const [data, setData] = useState<Page<ArticleListItem> | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    api<Page<ArticleListItem>>(`/api/articles?page=${page}&page_size=10`).then(setData);
+    setError(null);
+    api<Page<ArticleListItem>>(`/api/articles?page=${page}&page_size=10`)
+      .then(setData)
+      .catch((err) => {
+        console.error("Failed to load articles:", err);
+        setError(err.message || "加载失败，请稍后重试");
+      });
   }, [page]);
 
+  if (error) return <p className="empty">❌ {error}</p>;
   if (!data) return <p className="empty">加载中</p>;
   if (data.items.length === 0) return <p className="empty">还没有文章</p>;
 
@@ -27,7 +28,7 @@ export function HomePage() {
       <ol className="log">
         {data.items.map((item) => (
           <li className="log-item" key={item.slug}>
-            <time className="spine">{spine(item.published_at)}</time>
+            <time className="spine">{formatDate(item.published_at)}</time>
             <span className="bookmark" aria-hidden="true" />
             <div>
               <h2>

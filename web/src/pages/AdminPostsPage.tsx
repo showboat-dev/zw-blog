@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, type AdminArticle, type Page } from "../api/client";
+import { formatDate } from "../utils/date";
+
+const statusLabels: Record<string, string> = {
+  draft: "草稿",
+  published: "已发布",
+};
 
 export function AdminPostsPage() {
   const [status, setStatus] = useState("");
@@ -48,8 +54,8 @@ export function AdminPostsPage() {
               <td>
                 <Link to={`/admin/posts/${item.id}/edit`}>{item.title}</Link>
               </td>
-              <td className="status">{item.status}</td>
-              <td>{item.updated_at}</td>
+              <td className="status">{statusLabels[item.status] || item.status}</td>
+              <td>{formatDate(item.updated_at)}</td>
             </tr>
           ))}
         </tbody>

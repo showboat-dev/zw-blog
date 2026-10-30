@@ -15,5 +15,16 @@ class Settings(BaseSettings):
     upload_dir: str = "./data/uploads"
     cookie_secure: bool = False
 
+    @property
+    def allowed_origins(self) -> list[str]:
+        """Return list of allowed CORS origins. Includes both localhost and 127.0.0.1 variants."""
+        origins = [self.public_web_origin]
+        # Also allow 127.0.0.1 variant if origin uses localhost
+        if "localhost" in self.public_web_origin:
+            origins.append(self.public_web_origin.replace("localhost", "127.0.0.1"))
+        elif "127.0.0.1" in self.public_web_origin:
+            origins.append(self.public_web_origin.replace("127.0.0.1", "localhost"))
+        return origins
+
 
 settings = Settings()

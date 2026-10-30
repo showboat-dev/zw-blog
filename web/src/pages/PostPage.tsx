@@ -1,7 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ApiError, api, type ArticleDetail, type CommentItem } from "../api/client";
+import { API_BASE_URL, ApiError, api, type ArticleDetail, type CommentItem } from "../api/client";
 import { MarkdownView } from "../components/MarkdownView";
+import { formatDate } from "../utils/date";
 
 export function PostPage() {
   const { slug = "" } = useParams();
@@ -47,10 +48,17 @@ export function PostPage() {
     setComments((current) => current.filter((item) => item.id !== id));
   }
 
+  // Remove leading H1 if it matches the title to avoid duplication
+  let bodyMd = article.body_md;
+  const h1Match = bodyMd.match(/^#\s+(.+?)$/m);
+  if (h1Match && h1Match[1].trim() === article.title.trim()) {
+    bodyMd = bodyMd.replace(/^#\s+.+?$\n*/m, "");
+  }
+
   return (
     <>
       <article className="article">
-        <time className="spine">{article.published_at}</time>
+        <time className="spine">{formatDate(article.published_at)}</time>
         <span className="bookmark" aria-hidden="true" />
         <div>
           <h1>{article.title}</h1>
@@ -61,7 +69,7 @@ export function PostPage() {
               </Link>
             ))}
           </div>
-          <MarkdownView source={article.body_md} />
+          <MarkdownView source={bodyMd} />
         </div>
       </article>
       <section className="comments">
@@ -84,7 +92,7 @@ export function PostPage() {
           </form>
         ) : (
           <p>
-            <a className="link-btn" href={`/api/auth/github?next=/posts/${slug}`}>
+            <a className="link-btn" href={`${API_BASE_URL}/api/auth/github?next=/posts/${slug}`}>
               使用 GitHub 登录
             </a>
           </p>
@@ -94,7 +102,7 @@ export function PostPage() {
             <img className="avatar" src={item.github_avatar_url} alt="" />
             <div>
               <div className="meta">
-                {item.github_login} · {item.created_at}
+                {item.github_login} · {formatDate(item.created_at)}
               </div>
               <p>{item.body}</p>
             </div>

@@ -18,7 +18,7 @@ def on_startup() -> None:
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.public_web_origin],
+    allow_origins=settings.allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

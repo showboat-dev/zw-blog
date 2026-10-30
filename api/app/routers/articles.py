@@ -33,15 +33,28 @@ def list_articles(
             .where(Article.status == "published", Tag.slug == tag)
         )
     if q and q.strip():
-        ids = [
-            row[0]
-            for row in db.execute(
-                text("SELECT article_id FROM articles_fts WHERE articles_fts MATCH :q"),
-                {"q": q.strip()},
+        search_term = q.strip()
+        # For short queries (< 3 chars), FTS won't match well, so use SQL LIKE instead
+        if len(search_term) < 3:
+            # Fallback to LIKE search for very short queries
+            like_pattern = f"%{search_term}%"
+            query = query.where(
+                (Article.title.like(like_pattern)) | (Article.body_md.like(like_pattern))
             )
-        ]
-        query = query.where(Article.id.in_(ids or [-1]))
-        count = count.where(Article.id.in_(ids or [-1]))
+            count = count.where(
+                (Article.title.like(like_pattern)) | (Article.body_md.like(like_pattern))
+            )
+        else:
+            # Use FTS for longer queries
+            ids = [
+                row[0]
+                for row in db.execute(
+                    text("SELECT article_id FROM articles_fts WHERE articles_fts MATCH :q"),
+                    {"q": search_term},
+                )
+            ]
+            query = query.where(Article.id.in_(ids or [-1]))
+            count = count.where(Article.id.in_(ids or [-1]))
     total = int(db.scalar(count) or 0)
     items = db.scalars(
         query.order_by(Article.published_at.desc())

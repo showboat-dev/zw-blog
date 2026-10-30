@@ -1,5 +1,7 @@
 const base = import.meta.env.VITE_API_BASE_URL ?? "";
 
+export const API_BASE_URL = base;
+
 export class ApiError extends Error {
   constructor(
     public status: number,
