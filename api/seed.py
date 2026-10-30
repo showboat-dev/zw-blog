@@ -4,7 +4,7 @@
 from datetime import datetime
 
 from app import db as database
-from app.models import Article, Tag
+from app.models import Article, Tag, AboutPage
 from app.slug import slugify
 
 
@@ -167,8 +167,42 @@ uvicorn main:app --reload
 
         session.add_all([tech_tag, essay_tag, tutorial_tag])
         session.add_all([article1, article2, article3, article4])
+        session.flush()  # Flush to assign IDs before FTS update
 
-        # Update FTS5 for published articles
+        # Seed about page content
+        about = session.query(AboutPage).first()
+        if about and not about.body_md.strip():
+            about.body_md = """# 关于我
+
+你好！👋
+
+我是一名热爱技术的开发者，这里是我的个人博客。
+
+## 博客内容
+
+在这里我会分享：
+
+- 📚 技术学习笔记和教程
+- 💭 编程思考和心得
+- 🔧 项目实践经验
+- 📝 生活随笔
+
+## 技术栈
+
+这个博客使用的技术：
+
+- React + Vite
+- FastAPI + SQLAlchemy
+- SQLite
+- Docker
+
+## 联系方式
+
+欢迎通过 GitHub 与我交流！
+"""
+            about.updated_at = datetime.utcnow()
+
+        # Update FTS5 for published articles (after flush so IDs are available)
         for article in [article1, article2, article3]:
             database.fts_upsert(session, article.id, article.title, article.body_md)
 

@@ -43,10 +43,11 @@ def init_db(url: str | None = None) -> Engine:
     SessionLocal = sessionmaker(bind=_engine, autoflush=False, autocommit=False)
     Base.metadata.create_all(_engine)
     with _engine.begin() as conn:
+        # Use unicode61 for FTS; short queries fall back to LIKE in search logic
         conn.execute(
             text(
                 "CREATE VIRTUAL TABLE IF NOT EXISTS articles_fts "
-                "USING fts5(title, body_md, article_id UNINDEXED)"
+                "USING fts5(title, body_md, article_id UNINDEXED, tokenize='unicode61 remove_diacritics 0')"
             )
         )
         if conn.execute(text("SELECT COUNT(*) FROM about_page")).scalar() == 0:
