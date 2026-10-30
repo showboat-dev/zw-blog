@@ -44,7 +44,7 @@ def make_reader_cookie(github_id: int, login: str, avatar_url: str) -> str:
 def cookie_kwargs(max_age: int) -> dict[str, Any]:
     return {
         "httponly": True,
-        "samesite": "lax",
+        "samesite": "none" if settings.cookie_secure else "lax",
         "secure": settings.cookie_secure,
         "path": "/",
         "max_age": max_age,
