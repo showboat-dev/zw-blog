@@ -12,3 +12,13 @@ ENV API_UPSTREAM=http://127.0.0.1:8000
 EXPOSE 10000
 CMD ["node", "server.mjs"]
 
+
+
+
+
+
+
+
+
+
+
